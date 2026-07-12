@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { Bell, Car, CircleHelp, ClipboardCheck, FileText, LayoutDashboard, LogIn, LogOut, Plus, ShieldCheck, UserRound, Wrench } from "lucide-react";
+import { Bell, Car, CircleHelp, ClipboardCheck, FileText, KeyRound, LayoutDashboard, LogIn, LogOut, Plus, ShieldCheck, UserRound, Wrench } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
 const vehicles = [
@@ -67,6 +67,7 @@ export default function Home() {
           <a><Icon>✓</Icon> Checklists</a>
           <a><Icon>⚙</Icon> Manutenção <b>2</b></a>
           <a><Icon>▤</Icon> Relatório diário</a>
+          <Link href="/claviculario"><KeyRound size={18}/> Claviculário</Link>
           {isAdmin&&<><a><ShieldCheck size={18}/> Administração</a><a><UserRound size={18}/> Usuários</a></>}
         </nav>
         <div className="sidebar-bottom"><a><Icon>?</Icon> Ajuda e suporte</a><div className="profile"><div className="avatar">{initials}</div><div><strong>{profile.rank?profile.rank+" ":""}{displayName}</strong><small>{roleLabel}</small></div><span>⋮</span></div></div>
