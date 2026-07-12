@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Bell, Car, CircleHelp, ClipboardCheck, FileText, KeyRound, LayoutDashboard, LogIn, LogOut, Plus, ShieldCheck, UserRound, Wrench } from "lucide-react";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 
 const vehicles = [
   { name: "Kombi", prefix: "12BP150", plate: "ABC-1234", origin: "ETA", current: "STS", km: "84.620", status: "Na STS", tone: "blue" },
@@ -28,7 +28,7 @@ export default function Home() {
   const [sessionReady,setSessionReady]=useState(false);
   const [authenticated,setAuthenticated]=useState(false);
   const [profile,setProfile]=useState({full_name:"",rank:"",role:""});
-  useEffect(()=>{const load=async(userId?:string)=>{if(!userId)return;const {data}=await supabase.from("profiles").select("full_name,rank,role,status").eq("id",userId).single();if(data)setProfile(data)};
+  useEffect(()=>{const supabase=createClient();const load=async(userId?:string)=>{if(!userId)return;const {data}=await supabase.from("profiles").select("full_name,rank,role,status").eq("id",userId).single();if(data)setProfile(data)};
     supabase.auth.getSession().then(({data})=>{setAuthenticated(!!data.session);load(data.session?.user.id);setSessionReady(true)});
     const {data}=supabase.auth.onAuthStateChange((_event,session)=>{setAuthenticated(!!session);load(session?.user.id)});
     return()=>data.subscription.unsubscribe();

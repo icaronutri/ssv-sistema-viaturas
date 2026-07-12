@@ -2,13 +2,14 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, CheckCircle2 } from "lucide-react";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 
 export default function CadastroPage(){
  const [done,setDone]=useState(false);const [loading,setLoading]=useState(false);const [error,setError]=useState("");
  const [form,setForm]=useState({name:"",rank:"",militaryId:"",sector:"STS",email:"",password:""});
  const set=(k:string,v:string)=>setForm({...form,[k]:v});
  async function submit(e:React.FormEvent){e.preventDefault();setLoading(true);setError("");
+  const supabase = createClient();
   const {data,error:authError}=await supabase.auth.signUp({email:form.email,password:form.password,options:{data:{full_name:form.name}}});
   if(authError||!data.user){setError(authError?.message??"Não foi possível criar o cadastro.");setLoading(false);return;}
   const {data:sector}=await supabase.from("sectors").select("id").eq("name",form.sector).maybeSingle();

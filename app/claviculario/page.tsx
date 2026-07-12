@@ -2,20 +2,20 @@
 import {useEffect,useRef,useState} from "react";
 import Link from "next/link";
 import {ArrowLeft,Expand,KeyRound,Monitor,PenLine,RefreshCw,RotateCcw,Save} from "lucide-react";
-import {supabase} from "@/lib/supabase";
+import {createClient} from "@/lib/supabase/client";
 type Slot={id:string;slot_number:number;status:string}; type Ev={key_slot_id:string;event_type:string;holder_name:string;mission:string|null;occurred_at:string};
 export default function Claviculario(){
  const[slots,setSlots]=useState<Slot[]>([]),[events,setEvents]=useState<Ev[]>([]),[selected,setSelected]=useState<Slot|null>(null),[monitor,setMonitor]=useState(false);
  const[mission,setMission]=useState(""),[destination,setDestination]=useState(""),[external,setExternal]=useState(""),[message,setMessage]=useState(""),[saving,setSaving]=useState(false);
  const canvas=useRef<HTMLCanvasElement>(null),drawing=useRef(false);
- async function load(){const[{data:s},{data:e}]=await Promise.all([supabase.from("key_slots").select("*").eq("active",true).order("slot_number"),supabase.from("key_events").select("key_slot_id,event_type,holder_name,mission,occurred_at").order("occurred_at",{ascending:false}).limit(200)]);setSlots(s||[]);setEvents(e||[])}
- useEffect(()=>{load();const c=supabase.channel("keys").on("postgres_changes",{event:"*",schema:"public",table:"key_events"},load).subscribe();return()=>{supabase.removeChannel(c)}},[]);
+ async function load(){const supabase=createClient();const[{data:s},{data:e}]=await Promise.all([supabase.from("key_slots").select("*").eq("active",true).order("slot_number"),supabase.from("key_events").select("key_slot_id,event_type,holder_name,mission,occurred_at").order("occurred_at",{ascending:false}).limit(200)]);setSlots(s||[]);setEvents(e||[])}
+ useEffect(()=>{const supabase=createClient();load();const c=supabase.channel("keys").on("postgres_changes",{event:"*",schema:"public",table:"key_events"},load).subscribe();return()=>{void supabase.removeChannel(c)}},[]);
  const latest=(id:string)=>events.find(e=>e.key_slot_id===id),out=(id:string)=>["checkout","transfer"].includes(latest(id)?.event_type||"");
  function pos(e:React.PointerEvent<HTMLCanvasElement>){const c=canvas.current!,r=c.getBoundingClientRect();return{x:(e.clientX-r.left)*c.width/r.width,y:(e.clientY-r.top)*c.height/r.height}}
  function start(e:React.PointerEvent<HTMLCanvasElement>){drawing.current=true;const p=pos(e),x=canvas.current!.getContext("2d")!;x.beginPath();x.moveTo(p.x,p.y);canvas.current!.setPointerCapture(e.pointerId)}
  function draw(e:React.PointerEvent<HTMLCanvasElement>){if(!drawing.current)return;const p=pos(e),x=canvas.current!.getContext("2d")!;x.lineWidth=3;x.lineCap="round";x.strokeStyle="#071f3c";x.lineTo(p.x,p.y);x.stroke()}
  function clear(){canvas.current?.getContext("2d")?.clearRect(0,0,700,220)}
- async function save(){if(!selected||!mission.trim()){setMessage("Informe a missão.");return}setSaving(true);const{data:{user}}=await supabase.auth.getUser();if(!user){setMessage("Sessão expirada.");setSaving(false);return}
+ async function save(){if(!selected||!mission.trim()){setMessage("Informe a missão.");return}setSaving(true);const supabase=createClient();const{data:{user}}=await supabase.auth.getUser();if(!user){setMessage("Sessão expirada.");setSaving(false);return}
   const{data:p}=await supabase.from("profiles").select("full_name,rank,military_id").eq("id",user.id).single();const blob=await new Promise<Blob|null>(r=>canvas.current?.toBlob(r,"image/webp",.55));if(!blob){setMessage("Faça a assinatura.");setSaving(false);return}
   const buffer=await blob.arrayBuffer(),hash=Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256",buffer))).map(b=>b.toString(16).padStart(2,"0")).join(""),clientId=crypto.randomUUID(),path=user.id+"/"+new Date().toISOString().slice(0,10)+"/"+clientId+".webp";
   const up=await supabase.storage.from("key-signatures").upload(path,blob,{contentType:"image/webp"});if(up.error){setMessage("Erro ao salvar assinatura.");setSaving(false);return}const type=out(selected.id)?"return":"checkout";
