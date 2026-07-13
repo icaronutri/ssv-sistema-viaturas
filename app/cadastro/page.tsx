@@ -10,11 +10,12 @@ export default function CadastroPage(){
  const set=(k:string,v:string)=>setForm({...form,[k]:v});
  async function submit(e:React.FormEvent){e.preventDefault();setLoading(true);setError("");
   const supabase = createClient();
-  const {data,error:authError}=await supabase.auth.signUp({email:form.email,password:form.password,options:{data:{full_name:form.name}}});
+  const {data,error:authError}=await supabase.auth.signUp({email:form.email,password:form.password,options:{data:{
+   full_name:form.name.trim(),rank:form.rank.trim(),military_id:form.militaryId.trim(),sector:form.sector,
+   registration_type:"duty_sergeant_pre_registration",
+  }}});
   if(authError||!data.user){setError(authError?.message??"Não foi possível criar o cadastro.");setLoading(false);return;}
-  const {data:sector}=await supabase.from("sectors").select("id").eq("name",form.sector).maybeSingle();
-  const {error:profileError}=await supabase.from("profiles").insert({id:data.user.id,full_name:form.name,rank:form.rank,military_id:form.militaryId,sector_id:sector?.id,role:"driver",status:"pending"});
-  if(profileError){setError("Conta criada, mas o perfil precisa ser concluído pelo administrador.");}else setDone(true);setLoading(false);
+  setDone(true);setLoading(false);
  }
  if(done)return <main className="auth-page single"><section className="auth-card success"><CheckCircle2/><h2>Solicitação enviada</h2><p>Seu cadastro está aguardando aprovação do administrador. Você receberá acesso somente após a conferência dos dados.</p><Link href="/login">Voltar ao login</Link></section></main>;
  return <main className="auth-page"><section className="auth-brand"><div className="auth-logo"><img src="/ssv-logo-transparent.png" alt="Logo SSV"/></div><b>SSV</b><h1>Pré-cadastro do Sargento de Dia</h1><p>Informe seus dados funcionais. O acesso só será liberado após aprovação.</p></section>
