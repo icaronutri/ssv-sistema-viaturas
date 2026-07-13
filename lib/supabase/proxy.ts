@@ -47,7 +47,10 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
-  if (isPublic) return response;
+  // The landing page is public only for visitors without a session. An
+  // authenticated user must have an approved profile before seeing the
+  // dashboard rendered at `/`.
+  if (isPublic && pathname !== "/") return response;
 
   const { data: profile } = await supabase
     .from("profiles")

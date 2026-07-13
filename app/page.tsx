@@ -2,6 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import type { Session } from "@supabase/supabase-js";
 import { Bell, Car, CircleHelp, ClipboardCheck, FileText, KeyRound, LayoutDashboard, LogIn, LogOut, Plus, ShieldCheck, UserRound, Wrench } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
@@ -23,16 +25,39 @@ function Icon({ children }: { children: React.ReactNode }) {
 }
 
 export default function Home() {
+  const router = useRouter();
   const [query, setQuery] = useState("");
   const [toast, setToast] = useState("");
   const [sessionReady,setSessionReady]=useState(false);
   const [authenticated,setAuthenticated]=useState(false);
-  const [profile,setProfile]=useState({full_name:"",rank:"",role:""});
-  useEffect(()=>{const supabase=createClient();const load=async(userId?:string)=>{if(!userId)return;const {data}=await supabase.from("profiles").select("full_name,rank,role,status").eq("id",userId).single();if(data)setProfile(data)};
-    supabase.auth.getSession().then(({data})=>{setAuthenticated(!!data.session);load(data.session?.user.id);setSessionReady(true)});
-    const {data}=supabase.auth.onAuthStateChange((_event,session)=>{setAuthenticated(!!session);load(session?.user.id)});
-    return()=>data.subscription.unsubscribe();
-  },[]);
+  const [profile,setProfile]=useState({full_name:"",rank:"",role:"",status:""});
+  useEffect(()=>{
+    let active=true;
+    const supabase=createClient();
+    const applySession=async(session:Session|null)=>{
+      if(!active)return;
+      setSessionReady(false);
+      setAuthenticated(!!session);
+      if(!session){
+        setProfile({full_name:"",rank:"",role:"",status:""});
+        setSessionReady(true);
+        return;
+      }
+      const{data,error}=await supabase.from("profiles").select("full_name,rank,role,status").eq("id",session.user.id).single();
+      if(!active)return;
+      if(error||!data||data.status!=="approved"){
+        router.replace("/acesso-negado");
+        return;
+      }
+      setProfile(data);
+      setSessionReady(true);
+    };
+    void supabase.auth.getSession().then(({data})=>applySession(data.session));
+    const{data}=supabase.auth.onAuthStateChange((_event,session)=>{
+      queueMicrotask(()=>{void applySession(session)});
+    });
+    return()=>{active=false;data.subscription.unsubscribe()};
+  },[router]);
   const filtered = useMemo(() => vehicles.filter(v => `${v.name} ${v.prefix} ${v.plate}`.toLowerCase().replace(/[- ]/g, "").includes(query.toLowerCase().replace(/[- ]/g, ""))), [query]);
   const action = (text: string) => { setToast(text); setTimeout(() => setToast(""), 2500); };
   const displayName=profile.full_name||"Usuário";
