@@ -1,6 +1,7 @@
 -- Block 2: master-admin-only profile approvals and duty roster management.
 
 drop policy if exists profiles_admin_update on public.profiles;
+drop policy if exists profiles_master_update on public.profiles;
 create policy profiles_master_update
 on public.profiles for update to authenticated
 using (private.has_role(array['master_admin'::public.app_role]))
