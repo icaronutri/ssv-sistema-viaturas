@@ -14,7 +14,7 @@ export default function CadastroPage(){
    full_name:form.name.trim(),rank:form.rank.trim(),military_id:form.militaryId.trim(),sector:form.sector,
    registration_type:"duty_sergeant_pre_registration",
   }}});
-  if(authError||!data.user){setError(authError?.message??"Não foi possível criar o cadastro.");setLoading(false);return;}
+  if(authError||!data.user){setError(portugueseAuthError(authError?.message));setLoading(false);return;}
   setDone(true);setLoading(false);
  }
  if(done)return <main className="auth-page single"><section className="auth-card success"><CheckCircle2/><h2>Solicitação enviada</h2><p>Seu cadastro está aguardando aprovação do administrador. Você receberá acesso somente após a conferência dos dados.</p><Link href="/login">Voltar ao login</Link></section></main>;
@@ -24,3 +24,5 @@ export default function CadastroPage(){
  <label>Setor<select value={form.sector} onChange={e=>set("sector",e.target.value)}><option>STS</option><option>ETA</option><option>STR</option></select></label><label>E-mail<input type="email" value={form.email} onChange={e=>set("email",e.target.value)} required/></label><label>Crie sua senha<input type="password" minLength={8} value={form.password} onChange={e=>set("password",e.target.value)} required/><small>Mínimo de 8 caracteres.</small></label>
  {error&&<p className="form-message error">{error}</p>}<button className="auth-submit" disabled={loading}>{loading?"Enviando...":"Enviar para aprovação"}</button></form></section></main>
 }
+
+function portugueseAuthError(message?:string){if(!message)return"Não foi possível criar o cadastro.";const value=message.toLowerCase();if(value.includes("already registered")||value.includes("already been registered")||value.includes("user already exists"))return"Este e-mail já possui cadastro. Use a tela de login.";if(value.includes("password")&&(value.includes("weak")||value.includes("least")))return"A senha não atende aos requisitos de segurança. Use pelo menos 8 caracteres.";if(value.includes("invalid email"))return"Informe um e-mail válido.";if(value.includes("rate limit")||value.includes("too many"))return"Muitas tentativas em pouco tempo. Aguarde alguns minutos e tente novamente.";if(value.includes("signup")&&value.includes("disabled"))return"Novos cadastros estão temporariamente desativados.";return"Não foi possível criar o cadastro. Confira os dados e tente novamente."}

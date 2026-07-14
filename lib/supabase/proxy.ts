@@ -62,16 +62,17 @@ export async function updateSession(request: NextRequest) {
     const deniedUrl = request.nextUrl.clone();
     deniedUrl.pathname = "/acesso-negado";
     deniedUrl.search = "";
+    deniedUrl.searchParams.set("reason", profile?.status ?? "profile");
     return NextResponse.redirect(deniedUrl);
   }
 
-  const adminRoles = ["admin", "master_admin"];
   const operationalRoles = ["duty_sergeant", "admin", "master_admin"];
 
-  if (startsWithAny(pathname, ADMIN_PREFIXES) && !adminRoles.includes(profile.role)) {
+  if (startsWithAny(pathname, ADMIN_PREFIXES) && profile.role !== "master_admin") {
     const deniedUrl = request.nextUrl.clone();
     deniedUrl.pathname = "/acesso-negado";
     deniedUrl.search = "";
+    deniedUrl.searchParams.set("reason", "permission");
     return NextResponse.redirect(deniedUrl);
   }
 
@@ -79,6 +80,7 @@ export async function updateSession(request: NextRequest) {
     const deniedUrl = request.nextUrl.clone();
     deniedUrl.pathname = "/acesso-negado";
     deniedUrl.search = "";
+    deniedUrl.searchParams.set("reason", "permission");
     return NextResponse.redirect(deniedUrl);
   }
 

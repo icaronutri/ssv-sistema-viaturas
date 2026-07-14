@@ -1,22 +1,7 @@
+"use client";
+import {useEffect,useState} from "react";
 import Link from "next/link";
-import { ShieldX } from "lucide-react";
-
-export default function AcessoNegadoPage() {
-  return (
-    <main className="min-h-screen bg-slate-100 px-5 py-16 text-slate-900">
-      <section className="mx-auto max-w-md rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-sm">
-        <ShieldX className="mx-auto h-12 w-12 text-red-600" aria-hidden="true" />
-        <h1 className="mt-4 text-2xl font-bold">Acesso não autorizado</h1>
-        <p className="mt-3 text-sm leading-6 text-slate-600">
-          Sua conta está pendente, bloqueada ou não possui permissão para esta área.
-        </p>
-        <Link
-          className="mt-6 inline-flex rounded-lg bg-blue-700 px-5 py-3 text-sm font-semibold text-white"
-          href="/"
-        >
-          Voltar ao início
-        </Link>
-      </section>
-    </main>
-  );
-}
+import {ShieldX} from "lucide-react";
+import {createClient} from "@/lib/supabase/client";
+const content:Record<string,{title:string;body:string}>={pending:{title:"Cadastro aguardando aprovação",body:"Seu pedido foi recebido. O ADM Mestre ainda precisa conferir e liberar o acesso."},blocked:{title:"Conta bloqueada",body:"O acesso desta conta foi bloqueado. Procure o ADM Mestre responsável pelo SSV."},rejected:{title:"Cadastro não aprovado",body:"Sua solicitação não foi aprovada. Procure o ADM Mestre para revisar os dados."},permission:{title:"Sem permissão para esta área",body:"Sua conta está ativa, mas o seu nível de acesso não permite abrir esta tela."},profile:{title:"Perfil não encontrado",body:"A conta existe, mas o perfil do SSV não pôde ser localizado. Procure o ADM Mestre."}};
+export default function AcessoNegadoPage(){const[reason,setReason]=useState("permission");useEffect(()=>setReason(new URLSearchParams(window.location.search).get("reason")??"permission"),[]);const item=content[reason]??content.permission;async function logout(){await createClient().auth.signOut();window.location.href="/login"}return <main className="denied-page"><section><ShieldX aria-hidden/><h1>{item.title}</h1><p>{item.body}</p><div><Link href="/">Voltar ao início</Link><button onClick={logout}>Sair da conta</button></div></section></main>}
