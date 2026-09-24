@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#082b5c" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <title>Controle de Viaturas AFA</title>
+  <style>
+:root{--navy:#082b5c;--navy2:#0d3f79;--blue:#0b66d7;--green:#20a464;--red:#d94b4b;--amber:#e0a11d;--bg:#f4f7fb;--ink:#10233d;--muted:#728198;--line:#dfe7f1;--white:#fff;--shadow:0 10px 28px rgba(20,48,86,.10)}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);min-height:100dvh}button,input,select,textarea{font:inherit}button{cursor:pointer;-webkit-tap-highlight-color:transparent}button:disabled{opacity:.45;cursor:not-allowed}h1,h2,h3,p{margin-top:0}.hidden{display:none!important}.center{text-align:center}.muted{color:var(--muted);font-size:13px;line-height:1.45}.screen{display:none}.screen.active{display:block}.content-screen{max-width:980px;margin:0 auto;padding:18px 16px 100px}.auth-screen{min-height:100dvh;place-items:center;padding:24px 16px}.auth-screen.active{display:grid}.auth-card{width:min(100%,430px);background:#fff;border:1px solid #e4ebf4;border-radius:24px;padding:26px;box-shadow:var(--shadow)}
+.seal{width:78px;height:78px;margin:0 auto 14px;border-radius:22px;display:grid;place-items:center;background:linear-gradient(145deg,var(--navy2),var(--blue));color:#fff;font-size:22px;font-weight:900;box-shadow:0 12px 25px rgba(11,102,215,.24)}.auth-card h1{text-align:center;margin-bottom:5px}.demo-tip{text-align:center;color:#73839b;font-size:12px;margin:16px 0 0}.field{display:block;margin:14px 0}.field>span{display:block;margin-bottom:6px;font-size:11px;font-weight:900;letter-spacing:.35px;text-transform:uppercase;color:#56677f}.control{width:100%;padding:13px 14px;border:1px solid var(--line);border-radius:12px;background:#fbfdff;outline:none;color:var(--ink)}.control:focus{border-color:#6da6ec;box-shadow:0 0 0 4px rgba(11,102,215,.08)}textarea.control{resize:vertical;min-height:90px}.btn{border:0;border-radius:12px;padding:13px 15px;font-weight:850;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px}.btn.full,.full{width:100%}.btn.primary{color:#fff;background:linear-gradient(135deg,#0a58bb,#0b72ef);box-shadow:0 8px 18px rgba(11,102,215,.20)}.btn.success{background:var(--green);color:#fff}.btn.secondary{background:#eaf2fc;color:var(--navy)}.btn.danger{background:#ffecec;color:#a33232}.text-btn,.back-link{border:0;background:transparent;color:var(--blue);font-weight:800;padding:12px}.back-link{padding-left:0}.message{padding:11px 12px;border-radius:11px;font-size:13px;margin:10px 0}.message.error{display:block!important;background:#ffeded;color:#9c2b2b}.message.success{display:block!important;background:#e9f8f0;color:#167044}
+.topbar{position:sticky;top:0;z-index:30;color:#fff;background:linear-gradient(135deg,var(--navy),var(--navy2));padding:12px 14px;box-shadow:0 5px 20px rgba(9,43,91,.18)}.topbar-inner{max-width:980px;margin:auto;display:flex;align-items:center;gap:11px}.brandmark{width:42px;height:42px;border:2px solid rgba(255,255,255,.65);border-radius:12px;display:grid;place-items:center;font-weight:900}.brandcopy{display:grid;gap:2px}.brandcopy strong{font-size:15px}.brandcopy span{font-size:11px;opacity:.74}.icon-btn{margin-left:auto;border:0;background:rgba(255,255,255,.10);color:#fff;border-radius:10px;padding:10px 12px;font-weight:800}.hero{background:linear-gradient(135deg,var(--navy),#0b64c9);color:#fff;border-radius:20px;padding:20px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 12px 28px rgba(8,43,92,.16);margin-bottom:14px}.hero h2{margin-bottom:4px}.hero p{margin:0;opacity:.83}.eyebrow{font-size:10px!important;letter-spacing:1.1px;font-weight:900;opacity:.75!important}.hero-badge{width:58px;height:58px;border-radius:18px;border:1px solid rgba(255,255,255,.35);display:grid;place-items:center;font-weight:900;background:rgba(255,255,255,.10)}
+.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.quick-card{border:1px solid #dde7f2;background:#fff;border-radius:18px;min-height:126px;padding:15px;text-align:left;box-shadow:0 7px 20px rgba(24,55,91,.06);color:var(--navy)}.quick-card span{font-size:30px;display:block;margin-bottom:10px}.quick-card b{display:block;font-size:14px}.quick-card small{display:block;color:#8290a3;font-size:11px;margin-top:4px;line-height:1.3}.section-title{font-size:15px;margin:20px 0 10px}.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{background:#fff;border:1px solid #e3eaf2;border-radius:16px;padding:14px;box-shadow:0 6px 18px rgba(24,55,91,.05)}.stat span{display:block;color:#7b899b;font-size:11px}.stat b{display:block;font-size:27px;margin-top:6px}.page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px}.page-head h2{margin-bottom:4px}.stack{display:grid;gap:12px}.card{background:#fff;border:1px solid #e3eaf2;border-radius:18px;box-shadow:0 7px 22px rgba(24,55,91,.06)}.vehicle-card{overflow:hidden}.vehicle-top{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:16px;display:flex;justify-content:space-between;align-items:center}.vehicle-top strong{display:block;font-size:21px}.vehicle-top .v-plate{display:block;font-size:12px;opacity:.8;margin-top:3px}.vehicle-body{padding:15px}.meta-row{display:flex;justify-content:space-between;gap:16px;padding:8px 0;border-bottom:1px solid #edf2f7;font-size:13px}.meta-row span{color:#7a899d}.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}.status-pill{display:inline-flex;border-radius:999px;padding:6px 9px;font-size:10px;font-weight:900}.status-pill.ok{background:#e7f8ef;color:#14734b}.status-pill.run{background:#fff0d4;color:#865808}.status-pill.bad{background:#ffe7e7;color:#a32e2e}.flow-title{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.step-bars{display:flex;gap:7px;margin:8px 0 18px}.step-bars i{height:7px;flex:1;border-radius:99px;background:#dde6f1}.step-bars i.on{background:var(--blue)}.form-card{padding:16px}.note{padding:11px 12px;background:#edf5ff;color:#164f92;border-radius:12px;font-size:13px}.note.warn{background:#fff4d9;color:#74520c}.check-list{display:grid;gap:9px}.check-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:10px;background:#fff;border:1px solid #e1e9f2;border-radius:14px;padding:12px}.check-row b{font-size:14px}.seg{border:1px solid #d8e2ed;background:#f9fbfd;border-radius:9px;padding:8px 9px;font-size:11px;font-weight:900}.seg.ok.active{background:#e5f8ef;border-color:#7bcfab;color:#14714b}.seg.nc.active{background:#ffeaea;border-color:#e59b9b;color:#a02e2e}.row{display:flex;gap:10px;align-items:center}.between{justify-content:space-between}.photos{display:grid;grid-template-columns:1fr 1fr;gap:10px}.photo-slot{min-height:130px;border:1.5px dashed #b7c6d8;border-radius:14px;background:#fff;display:grid;place-items:center;overflow:hidden;color:#65768e;font-size:12px;text-align:center;padding:8px}.photo-slot img{width:100%;height:100%;object-fit:cover}.photo-slot input{display:none}.signature-card{background:#fff;border:1px solid #dfe7f1;border-radius:15px;padding:10px}.signature-card canvas{width:100%;height:190px;border:1.5px dashed #afbdd0;border-radius:11px;background:#fff;touch-action:none}.summary-box{background:#fff;border:1px solid #e2e9f1;border-radius:16px;padding:14px;margin:12px 0}.summary-line{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #edf2f6;font-size:12px}.summary-line:last-child{border-bottom:0}.table-wrap{overflow:auto;border:1px solid #e1e8f1;border-radius:14px;background:#fff}table{border-collapse:collapse;width:100%;min-width:680px}th,td{padding:10px 11px;border-bottom:1px solid #edf1f6;text-align:left;font-size:12px}th{background:#f8fafc;font-size:10px;text-transform:uppercase;color:#5a6980}.mini{border:0;border-radius:8px;padding:7px 9px;font-size:11px;font-weight:900}.mini.approve{background:#e5f8ef;color:#14714b}.mini.reject{background:#ffeaea;color:#a02e2e}.bottom-nav{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.97);border-top:1px solid #dfe7f1;display:flex;justify-content:space-around;padding:8px 4px calc(8px + env(safe-area-inset-bottom));z-index:40;backdrop-filter:blur(15px)}.bottom-nav button{border:0;background:transparent;color:#71829b;font-size:10px;font-weight:800;min-width:60px;padding:4px}.bottom-nav span{display:block;font-size:20px;margin-bottom:2px}.bottom-nav b{font-size:10px}.empty{padding:18px;background:#fff;border:1px dashed #ccd8e6;border-radius:14px;color:#718097;text-align:center;font-size:13px}.debug-badge{position:fixed;right:8px;top:8px;z-index:999;background:#16243b;color:#fff;font:11px/1 monospace;padding:5px 7px;border-radius:7px;opacity:.85}
+@media(min-width:760px){.content-screen{padding-top:24px}.quick-grid{grid-template-columns:repeat(4,1fr)}.stats-grid{grid-template-columns:repeat(4,1fr)}.photos{grid-template-columns:repeat(4,1fr)}.bottom-nav{left:50%;transform:translateX(-50%);width:min(620px,90%);bottom:14px;border:1px solid #dfe7f1;border-radius:18px;box-shadow:0 10px 28px rgba(25,55,93,.14)}.auth-screen{background:radial-gradient(circle at 50% 10%,#e9f2ff,#f4f7fb 46%)}}
+</style>
+</head>
+<body>
+  <header id="topbar" class="topbar hidden">
+    <div class="topbar-inner">
+      <div class="brandmark">AFA</div>
+      <div class="brandcopy">
+        <strong>Controle de Viaturas</strong>
+        <span>Checklist • Saída • Regresso</span>
+      </div>
+      <button class="icon-btn" data-action="logout" aria-label="Sair">Sair</button>
+    </div>
+  </header>
+
+  <main id="app">
+    <section id="screen-login" class="screen active auth-screen">
+      <div class="auth-card">
+        <div class="seal">AFA</div>
+        <h1>Controle de Viaturas</h1>
+        <p class="muted center">Academia da Força Aérea • protótipo funcional mobile-first</p>
+
+        <label class="field">
+          <span>Login</span>
+          <input id="login-user" class="control" autocomplete="username" value="gerente" />
+        </label>
+        <label class="field">
+          <span>Senha</span>
+          <input id="login-pass" class="control" autocomplete="current-password" type="password" value="123456" />
+        </label>
+        <button class="btn primary full" data-action="login">Entrar</button>
+        <div id="login-message" class="message hidden"></div>
+        <button class="text-btn full" data-action="open-register">Criar cadastro de motorista</button>
+        <p class="demo-tip">Teste: <b>gerente</b> / <b>123456</b></p>
+      </div>
+    </section>
+
+    <section id="screen-register" class="screen auth-screen">
+      <div class="auth-card">
+        <button class="back-link" data-action="go-login">← Voltar</button>
+        <h2>Cadastro de motorista</h2>
+        <p class="muted">O cadastro ficará pendente até aprovação do gerente.</p>
+        <label class="field"><span>Nome completo</span><input id="reg-name" class="control" /></label>
+        <label class="field"><span>Posto/Graduação</span><input id="reg-rank" class="control" /></label>
+        <label class="field"><span>Setor</span><input id="reg-sector" class="control" /></label>
+        <label class="field"><span>Login</span><input id="reg-login" class="control" autocomplete="username" /></label>
+        <label class="field"><span>Senha</span><input id="reg-pass" class="control" type="password" autocomplete="new-password" /></label>
+        <div id="register-message" class="message hidden"></div>
+        <button class="btn primary full" data-action="register-driver">Enviar cadastro</button>
+      </div>
+    </section>
+
+    <section id="screen-home" class="screen content-screen">
+      <div class="hero">
+        <div>
+          <p class="eyebrow">CONTROLE DE VIATURAS</p>
+          <h2 id="home-hello">Olá</h2>
+          <p>Selecione uma operação.</p>
+        </div>
+        <div class="hero-badge">AFA</div>
+      </div>
+      <div class="quick-grid">
+        <button class="quick-card" data-action="open-vehicles"><span>🚙</span><b>Buscar viatura</b><small>Saída e ficha do veículo</small></button>
+        <button class="quick-card" data-action="open-return"><span>↩️</span><b>Registrar regresso</b><small>Movimentações abertas</small></button>
+        <button class="quick-card" data-action="open-history"><span>📋</span><b>Movimentações</b><small>Histórico de saídas</small></button>
+        <button class="quick-card" data-action="open-admin"><span>📊</span><b>Painel gerente</b><small>Cadastros e frota</small></button>
+      </div>
+      <h3 class="section-title">Situação da frota</h3>
+      <div id="home-summary" class="stats-grid"></div>
+    </section>
+
+    <section id="screen-vehicles" class="screen content-screen">
+      <div class="page-head"><div><h2>Viaturas</h2><p class="muted">Selecione uma viatura.</p></div><button class="btn secondary" data-action="go-home">Voltar</button></div>
+      <div id="vehicle-list" class="stack"></div>
+    </section>
+
+    <section id="screen-flow" class="screen content-screen"><div id="flow-root"></div></section>
+
+    <section id="screen-history" class="screen content-screen">
+      <div class="page-head"><div><h2>Histórico</h2><p class="muted">Saídas e regressos registrados.</p></div><button class="btn secondary" data-action="go-home">Voltar</button></div>
+      <div id="history-list" class="stack"></div>
+    </section>
+
+    <section id="screen-admin" class="screen content-screen">
+      <div class="page-head"><div><h2>Gerência</h2><p class="muted">Aprovação de motoristas e controle da frota.</p></div><button class="btn secondary" data-action="go-home">Voltar</button></div>
+      <div id="admin-root"></div>
+    </section>
+  </main>
+
+  <nav id="bottom-nav" class="bottom-nav hidden" aria-label="Navegação principal">
+    <button data-action="go-home"><span>⌂</span><b>Início</b></button>
+    <button data-action="open-vehicles"><span>🚙</span><b>Viaturas</b></button>
+    <button data-action="open-history"><span>☷</span><b>Histórico</b></button>
+    <button data-action="open-admin"><span>⚙</span><b>Gerência</b></button>
+  </nav>
+
+  <template id="vehicle-template">
+    <article class="vehicle-card card">
+      <div class="vehicle-top"><div><strong class="v-prefix"></strong><span class="v-plate"></span></div><span class="status-pill v-status"></span></div>
+      <div class="vehicle-body">
+        <div class="meta-row"><span>Modelo</span><b class="v-model"></b></div>
+        <div class="meta-row"><span>Setor</span><b class="v-sector"></b></div>
+        <div class="meta-row"><span>Quilometragem</span><b class="v-km"></b></div>
+        <div class="action-grid">
+          <button class="btn success v-exit">▶ Registrar saída</button>
+          <button class="btn primary v-return">↩ Registrar regresso</button>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <script>
+window.APP_CONFIG = {
+  mode: 'demo',
+  apiUrl: '',
+  appName: 'Controle de Viaturas AFA'
+};
+
+</script>
+  <script>
+(() => {
+  'use strict';
+
+  const CONFIG = window.APP_CONFIG || { mode: 'demo', apiUrl: '' };
+  const STORAGE_KEY = 'afa_frota_full_v1';
+  const SESSION_KEY = 'afa_frota_session_v1';
+  const seed = {
+    users: [{ id:'MGR-001', name:'Gerente Demo', login:'gerente', password:'123456', role:'GERENTE', status:'ATIVO', rank:'Gerente', sector:'Gerência' }],
+    vehicles: [
+      { id:'V1', prefix:'VTR-023', plate:'ABC1D23', model:'Ranger XLS', year:2024, sector:'Logística', km:82450, status:'DISPONÍVEL' },
+      { id:'V2', prefix:'VTR-024', plate:'XYZ4E56', model:'Spin LT', year:2023, sector:'Apoio', km:43120, status:'DISPONÍVEL' }
+    ],
+    movements: [],
+    audit: []
+  };
+
+  let db = loadDb();
+  let session = loadSession();
+  let flow = null;
+
+  const $ = (id) => document.getElementById(id);
+  const qsa = (sel) => [...document.querySelectorAll(sel)];
+  const clone = (obj) => JSON.parse(JSON.stringify(obj));
+  const uid = (prefix) => `${prefix}-${Date.now()}-${Math.floor(Math.random()*1000)}`;
+  const nowText = () => new Date().toLocaleString('pt-BR');
+  const fmtKm = (n) => `${Number(n || 0).toLocaleString('pt-BR')} km`;
+  const esc = (value) => String(value ?? '').replace(/[&<>'"]/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[m]));
+
+  function loadDb(){
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || clone(seed); }
+    catch { return clone(seed); }
+  }
+  function saveDb(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(db)); }
+  function loadSession(){ return sessionStorage.getItem(SESSION_KEY) || null; }
+  function saveSession(id){ session = id; if(id) sessionStorage.setItem(SESSION_KEY,id); else sessionStorage.removeItem(SESSION_KEY); }
+  function currentUser(){ return db.users.find(u => u.id === session) || null; }
+  function audit(event, details=''){ db.audit.push({id:uid('LOG'), at:nowText(), userId:session, event, details}); saveDb(); }
+
+  function setMessage(id, text='', type='error'){
+    const node=$(id); if(!node) return;
+    node.textContent=text;
+    node.className = text ? `message ${type}` : 'message hidden';
+  }
+
+  function showScreen(name){
+    qsa('.screen').forEach(s => s.classList.remove('active'));
+    const target = $(`screen-${name}`);
+    if(!target) return;
+    target.classList.add('active');
+    const logged = !!currentUser();
+    $('topbar').classList.toggle('hidden', !logged);
+    $('bottom-nav').classList.toggle('hidden', !logged);
+    if(name==='home') renderHome();
+    if(name==='vehicles') renderVehicles();
+    if(name==='history') renderHistory();
+    if(name==='admin') renderAdmin();
+    window.scrollTo({top:0, behavior:'instant'});
+  }
+
+  async function api(action, payload={}){
+    if(CONFIG.mode !== 'live' || !CONFIG.apiUrl) return null;
+    const res = await fetch(CONFIG.apiUrl, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify({action, ...payload})});
+    const data = await res.json();
+    if(!data.ok) throw new Error(data.error || 'Falha no servidor');
+    return data;
+  }
+
+  async function doLogin(){
+    const login=$('login-user').value.trim();
+    const password=$('login-pass').value;
+    setMessage('login-message');
+    try {
+      if(CONFIG.mode==='live' && CONFIG.apiUrl){
+        const out=await api('login',{login,password});
+        localStorage.setItem('afa_live_token',out.token);
+        db.users=[out.user]; db.vehicles=out.vehicles||[]; db.movements=out.movements||[];
+        saveSession(out.user.id); showScreen('home'); return;
+      }
+      const user=db.users.find(u=>u.login===login && u.password===password);
+      if(!user) return setMessage('login-message','Login ou senha incorretos.');
+      if(user.status!=='ATIVO') return setMessage('login-message','Cadastro ainda não aprovado.');
+      saveSession(user.id); audit('LOGIN'); showScreen('home');
+    } catch(err){ setMessage('login-message',err.message || 'Falha ao entrar.'); }
+  }
+
+  async function registerDriver(){
+    const data={name:$('reg-name').value.trim(),rank:$('reg-rank').value.trim(),sector:$('reg-sector').value.trim(),login:$('reg-login').value.trim(),password:$('reg-pass').value};
+    setMessage('register-message');
+    if(!data.name || !data.login || data.password.length<6) return setMessage('register-message','Preencha nome, login e senha com pelo menos 6 caracteres.');
+    try {
+      if(CONFIG.mode==='live' && CONFIG.apiUrl){ await api('registerDriver',data); }
+      else {
+        if(db.users.some(u=>u.login===data.login)) return setMessage('register-message','Este login já está cadastrado.');
+        db.users.push({id:uid('MOT'),...data,role:'MOTORISTA',status:'PENDENTE',createdAt:nowText()}); saveDb();
+      }
+      setMessage('register-message','Cadastro enviado. Aguarde aprovação do gerente.','success');
+      setTimeout(()=>showScreen('login'),900);
+    } catch(err){ setMessage('register-message',err.message || 'Falha ao cadastrar.'); }
+  }
+
+  function renderHome(){
+    const user=currentUser(); if(!user){showScreen('login');return;}
+    $('home-hello').textContent=`Olá, ${user.name}`;
+    const available=db.vehicles.filter(v=>v.status==='DISPONÍVEL').length;
+    const running=db.vehicles.filter(v=>v.status==='EM DESLOCAMENTO').length;
+    const pending=db.users.filter(u=>u.status==='PENDENTE').length;
+    const totalKm=db.movements.reduce((s,m)=>s+(Number(m.distance)||0),0);
+    $('home-summary').innerHTML=[['Disponíveis',available],['Em deslocamento',running],['Cadastros pendentes',pending],['KM registrados',totalKm]].map(([label,value])=>`<div class="stat"><span>${esc(label)}</span><b>${esc(value)}</b></div>`).join('');
+  }
+
+  function renderVehicles(){
+    const root=$('vehicle-list'); root.innerHTML='';
+    db.vehicles.forEach(v=>{
+      const frag=$('vehicle-template').content.cloneNode(true);
+      frag.querySelector('.v-prefix').textContent=v.prefix;
+      frag.querySelector('.v-plate').textContent=v.plate;
+      frag.querySelector('.v-model').textContent=v.model;
+      frag.querySelector('.v-sector').textContent=v.sector;
+      frag.querySelector('.v-km').textContent=fmtKm(v.km);
+      const pill=frag.querySelector('.v-status'); pill.textContent=v.status; pill.classList.add(v.status==='DISPONÍVEL'?'ok':v.status==='EM DESLOCAMENTO'?'run':'bad');
+      const exit=frag.querySelector('.v-exit'); exit.disabled=v.status!=='DISPONÍVEL'; exit.dataset.vehicleId=v.id; exit.dataset.action='start-exit';
+      const ret=frag.querySelector('.v-return'); ret.disabled=v.status!=='EM DESLOCAMENTO'; ret.dataset.vehicleId=v.id; ret.dataset.action='start-return-vehicle';
+      root.appendChild(frag);
+    });
+  }
+
+  function createChecks(){ return {Pneus:'OK',Iluminação:'OK',Freios:'OK',Óleo:'OK',Água:'OK',Documentação:'OK',Limpeza:'OK',Avarias:'OK'}; }
+  function startExit(vehicleId){ flow={mode:'EXIT',vehicleId,step:1,checks:createChecks(),photos:[],signature:[],obs:''}; renderFlow(); showScreen('flow'); }
+  function startReturnByVehicle(vehicleId){
+    const movement=db.movements.find(m=>m.vehicleId===vehicleId && m.status==='EM DESLOCAMENTO');
+    if(!movement) return alert('Não há movimentação aberta para esta viatura.');
+    startReturn(movement.id);
+  }
+  function openReturn(){
+    const open=db.movements.filter(m=>m.status==='EM DESLOCAMENTO');
+    if(!open.length) return alert('Não há viaturas aguardando regresso.');
+    if(open.length===1) return startReturn(open[0].id);
+    showScreen('history');
+  }
+  function startReturn(moveId){ const m=db.movements.find(x=>x.id===moveId); if(!m)return; flow={mode:'RETURN',moveId,vehicleId:m.vehicleId,step:1,checks:createChecks(),photos:[],signature:[],obs:''}; renderFlow(); showScreen('flow'); }
+
+  function stepBars(){ return `<div class="step-bars">${[1,2,3,4].map(n=>`<i class="${flow.step>=n?'on':''}"></i>`).join('')}</div>`; }
+  function flowHeader(v){ return `<div class="flow-title"><div><h2>${flow.mode==='EXIT'?'Saída':'Regresso'} — ${esc(v.prefix)}</h2><p class="muted">${esc(v.plate)} • ${esc(v.model)}</p></div><button class="btn secondary" data-action="cancel-flow">Cancelar</button></div>${stepBars()}`; }
+
+  function renderFlow(){
+    const v=db.vehicles.find(x=>x.id===flow?.vehicleId); if(!v)return;
+    const root=$('flow-root'); const movement=flow.mode==='RETURN'?db.movements.find(m=>m.id===flow.moveId):null;
+    if(flow.step===1){
+      root.innerHTML=flowHeader(v)+`<div class="card form-card">
+        <label class="field"><span>${flow.mode==='RETURN'?'KM final':'KM inicial'}</span><input id="flow-km" class="control" inputmode="numeric" type="number" value="${esc(flow.km ?? (flow.mode==='RETURN'?movement.kmInitial:v.km))}"></label>
+        ${flow.mode==='RETURN'?`<div class="note">KM inicial desta movimentação: <b>${fmtKm(movement.kmInitial)}</b></div>`:`<label class="field"><span>Destino / Finalidade</span><input id="flow-destination" class="control" value="${esc(flow.destination||'')}" placeholder="Ex.: Apoio operacional — Ala 2"></label>`}
+        <label class="field"><span>Combustível</span><select id="flow-fuel" class="control"><option>Cheio</option><option>3/4</option><option>1/2</option><option>1/4</option><option>Reserva</option></select></label>
+        <button class="btn primary full" data-action="flow-next-data">Próximo</button>
+      </div>`;
+      if(flow.fuel) $('flow-fuel').value=flow.fuel;
+      return;
+    }
+    if(flow.step===2){
+      root.innerHTML=flowHeader(v)+`<div class="check-list" id="check-list"></div><label class="field"><span>Observações</span><textarea id="flow-obs" class="control" placeholder="Descreva avarias ou ocorrências">${esc(flow.obs||'')}</textarea></label><div class="row"><button class="btn secondary" data-action="flow-back">Voltar</button><button class="btn primary" style="flex:1" data-action="flow-next-checks">Próximo</button></div>`;
+      renderChecks(); return;
+    }
+    if(flow.step===3){
+      root.innerHTML=flowHeader(v)+`<h3 class="section-title">Fotos</h3><p class="muted">Tire fotos diretamente com a câmera ou selecione imagens.</p><div class="photos" id="photo-grid"></div><div class="row" style="margin-top:14px"><button class="btn secondary" data-action="flow-back">Voltar</button><button class="btn primary" style="flex:1" data-action="flow-next-photos">Próximo</button></div>`;
+      renderPhotos(); return;
+    }
+    root.innerHTML=flowHeader(v)+`<h3 class="section-title">Assinatura do responsável</h3><div class="signature-card"><canvas id="signature-canvas"></canvas><div class="row between" style="margin-top:8px"><span class="muted">Assine com o dedo.</span><button class="text-btn" data-action="clear-signature">Limpar</button></div></div><label class="row" style="margin:14px 0"><input id="flow-declare" type="checkbox"><span class="muted">Declaro que as informações correspondem à vistoria realizada.</span></label><div class="row"><button class="btn secondary" data-action="flow-back">Voltar</button><button class="btn success" style="flex:1" data-action="finish-flow">Finalizar</button></div>`;
+    initSignature();
+  }
+
+  function renderChecks(){
+    const root=$('check-list'); if(!root)return;
+    root.innerHTML=Object.entries(flow.checks).map(([name,val])=>`<div class="check-row"><b>${esc(name)}</b><div><button class="seg ok ${val==='OK'?'active':''}" data-action="set-check" data-item="${esc(name)}" data-value="OK">OK</button> <button class="seg nc ${val==='NC'?'active':''}" data-action="set-check" data-item="${esc(name)}" data-value="NC">Não conforme</button></div></div>`).join('');
+  }
+
+  function renderPhotos(){
+    const root=$('photo-grid'); if(!root)return;
+    root.innerHTML=[0,1,2,3].map(i=>`<label class="photo-slot">${flow.photos[i]?`<img src="${flow.photos[i]}" alt="Foto ${i+1}">`:`<span>📷<br>Adicionar foto</span>`}<input type="file" accept="image/*" capture="environment" data-photo-index="${i}"></label>`).join('');
+  }
+
+  function nextData(){
+    const km=Number($('flow-km').value); if(!km)return alert('Informe a quilometragem.');
+    if(flow.mode==='RETURN'){
+      const m=db.movements.find(x=>x.id===flow.moveId); if(km<m.kmInitial)return alert('O KM final não pode ser menor que o KM inicial.');
+    } else {
+      const destination=$('flow-destination').value.trim(); if(!destination)return alert('Informe destino/finalidade.'); flow.destination=destination;
+    }
+    flow.km=km; flow.fuel=$('flow-fuel').value; flow.step=2; renderFlow();
+  }
+
+  function nextChecks(){ flow.obs=$('flow-obs').value.trim(); const hasNc=Object.values(flow.checks).includes('NC'); if(hasNc&&!flow.obs)return alert('Há item não conforme. Descreva a ocorrência.'); flow.step=3; renderFlow(); }
+
+  async function compressImage(file){
+    const data=await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(file)});
+    const img=await new Promise((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i);i.onerror=reject;i.src=data});
+    const max=1280, scale=Math.min(1,max/Math.max(img.width,img.height)); const canvas=document.createElement('canvas'); canvas.width=Math.round(img.width*scale); canvas.height=Math.round(img.height*scale); const ctx=canvas.getContext('2d'); ctx.drawImage(img,0,0,canvas.width,canvas.height); return canvas.toDataURL('image/jpeg',.76);
+  }
+
+  function initSignature(){
+    const c=$('signature-canvas'); if(!c)return; const rect=c.getBoundingClientRect(); const dpr=window.devicePixelRatio||1; c.width=Math.max(1,Math.round(rect.width*dpr)); c.height=Math.round(190*dpr); const ctx=c.getContext('2d'); ctx.scale(dpr,dpr); ctx.lineWidth=2.2; ctx.lineCap='round'; ctx.strokeStyle='#12233f';
+    let drawing=false,last=null; flow.signature=[];
+    const point=(e)=>{const r=c.getBoundingClientRect();return{x:+(e.clientX-r.left).toFixed(2),y:+(e.clientY-r.top).toFixed(2),t:Date.now()}};
+    c.addEventListener('pointerdown',(e)=>{e.preventDefault();drawing=true;last=point(e);flow.signature.push({type:'start',...last});c.setPointerCapture?.(e.pointerId)});
+    c.addEventListener('pointermove',(e)=>{if(!drawing)return;e.preventDefault();const p=point(e);ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.stroke();flow.signature.push({type:'move',...p});last=p});
+    const end=(e)=>{if(!drawing)return;drawing=false;const p=point(e);flow.signature.push({type:'end',...p})}; c.addEventListener('pointerup',end); c.addEventListener('pointercancel',end);
+  }
+
+  async function finishFlow(){
+    if(!$('flow-declare').checked)return alert('Confirme a declaração.'); if(flow.signature.length<4)return alert('Faça a assinatura.');
+    const canvas=$('signature-canvas'); flow.signaturePng=canvas.toDataURL('image/png'); const v=db.vehicles.find(x=>x.id===flow.vehicleId); const actor=currentUser();
+    if(flow.mode==='EXIT'){
+      const movement={id:uid('MOV'),vehicleId:v.id,prefix:v.prefix,plate:v.plate,driverId:actor.id,driver:actor.name,destination:flow.destination,exitTime:nowText(),kmInitial:flow.km,fuelOut:flow.fuel,exitChecks:clone(flow.checks),exitObs:flow.obs,exitPhotos:clone(flow.photos),exitSignature:clone(flow.signature),exitSignaturePng:flow.signaturePng,status:'EM DESLOCAMENTO'};
+      db.movements.push(movement); v.status='EM DESLOCAMENTO'; v.km=flow.km; audit('SAIDA',movement.id); saveDb(); alert(`Saída registrada. ${movement.id}`);
+    } else {
+      const movement=db.movements.find(m=>m.id===flow.moveId); movement.returnTime=nowText(); movement.kmFinal=flow.km; movement.distance=flow.km-movement.kmInitial; movement.fuelIn=flow.fuel; movement.returnChecks=clone(flow.checks); movement.returnObs=flow.obs; movement.returnPhotos=clone(flow.photos); movement.returnSignature=clone(flow.signature); movement.returnSignaturePng=flow.signaturePng; movement.status='FINALIZADA'; v.status='DISPONÍVEL'; v.km=flow.km; audit('REGRESSO',movement.id); saveDb(); alert(`Regresso finalizado. ${movement.distance} km percorridos.`);
+    }
+    flow=null; showScreen('home');
+  }
+
+  function renderHistory(){
+    const user=currentUser(); if(!user)return;
+    const list=user.role==='GERENTE'?db.movements:db.movements.filter(m=>m.driverId===user.id);
+    const root=$('history-list');
+    if(!list.length){root.innerHTML='<div class="empty">Nenhuma movimentação registrada.</div>';return;}
+    root.innerHTML=list.slice().reverse().map(m=>`<article class="card" style="padding:15px"><div class="row between"><div><b>${esc(m.prefix)} • ${esc(m.plate)}</b><div class="muted">${esc(m.driver)} • ${esc(m.destination)}</div></div><span class="status-pill ${m.status==='FINALIZADA'?'ok':'run'}">${esc(m.status)}</span></div><div class="summary-box"><div class="summary-line"><span>Saída</span><b>${esc(m.exitTime)}</b></div><div class="summary-line"><span>KM inicial</span><b>${fmtKm(m.kmInitial)}</b></div>${m.status==='FINALIZADA'?`<div class="summary-line"><span>Regresso</span><b>${esc(m.returnTime)}</b></div><div class="summary-line"><span>KM percorrido</span><b>${fmtKm(m.distance)}</b></div>`:`<button class="btn primary full" data-action="start-return" data-move-id="${esc(m.id)}">Registrar regresso</button>`}</div></article>`).join('');
+  }
+
+  function renderAdmin(){
+    const user=currentUser(); if(!user||user.role!=='GERENTE'){alert('Área exclusiva do gerente.');showScreen('home');return;}
+    const pending=db.users.filter(u=>u.status==='PENDENTE'); const drivers=db.users.filter(u=>u.role==='MOTORISTA'&&u.status==='ATIVO');
+    $('admin-root').innerHTML=`<div class="stats-grid"><div class="stat"><span>Pendentes</span><b>${pending.length}</b></div><div class="stat"><span>Motoristas ativos</span><b>${drivers.length}</b></div><div class="stat"><span>Viaturas</span><b>${db.vehicles.length}</b></div><div class="stat"><span>Movimentações</span><b>${db.movements.length}</b></div></div><h3 class="section-title">Cadastros pendentes</h3><div class="stack">${pending.length?pending.map(u=>`<div class="card" style="padding:14px"><div class="row between"><div><b>${esc(u.name)}</b><div class="muted">${esc(u.rank||'')} • ${esc(u.sector||'')}<br>${esc(u.login)}</div></div><div><button class="mini approve" data-action="approve-user" data-user-id="${esc(u.id)}">Aprovar</button> <button class="mini reject" data-action="reject-user" data-user-id="${esc(u.id)}">Recusar</button></div></div></div>`).join(''):'<div class="empty">Nenhum cadastro pendente.</div>'}</div><h3 class="section-title">Movimentações</h3><div class="table-wrap"><table><thead><tr><th>ID</th><th>Viatura</th><th>Motorista</th><th>Saída</th><th>KM rodado</th><th>Status</th></tr></thead><tbody>${db.movements.slice().reverse().map(m=>`<tr><td>${esc(m.id)}</td><td>${esc(m.prefix)}<br>${esc(m.plate)}</td><td>${esc(m.driver)}</td><td>${esc(m.exitTime)}</td><td>${m.distance==null?'—':esc(m.distance)}</td><td>${esc(m.status)}</td></tr>`).join('')}</tbody></table></div>`;
+  }
+
+  function approveUser(id){const u=db.users.find(x=>x.id===id);if(!u)return;u.status='ATIVO';audit('APROVAR_MOTORISTA',id);saveDb();renderAdmin();}
+  function rejectUser(id){const u=db.users.find(x=>x.id===id);if(!u)return;u.status='RECUSADO';audit('RECUSAR_MOTORISTA',id);saveDb();renderAdmin();}
+
+  document.addEventListener('click',(event)=>{
+    const button=event.target.closest('[data-action]'); if(!button)return;
+    const action=button.dataset.action;
+    const map={
+      'login':doLogin,'logout':()=>{audit('LOGOUT');saveSession(null);flow=null;showScreen('login')},'open-register':()=>showScreen('register'),'go-login':()=>showScreen('login'),'register-driver':registerDriver,
+      'go-home':()=>showScreen('home'),'open-vehicles':()=>showScreen('vehicles'),'open-return':openReturn,'open-history':()=>showScreen('history'),'open-admin':()=>showScreen('admin'),
+      'start-exit':()=>startExit(button.dataset.vehicleId),'start-return-vehicle':()=>startReturnByVehicle(button.dataset.vehicleId),'start-return':()=>startReturn(button.dataset.moveId),'cancel-flow':()=>{flow=null;showScreen('vehicles')},
+      'flow-next-data':nextData,'flow-next-checks':nextChecks,'flow-next-photos':()=>{flow.step=4;renderFlow()},'flow-back':()=>{flow.step=Math.max(1,flow.step-1);renderFlow()},'clear-signature':()=>{flow.signature=[];renderFlow()},'finish-flow':finishFlow,
+      'set-check':()=>{flow.checks[button.dataset.item]=button.dataset.value;renderChecks()},'approve-user':()=>approveUser(button.dataset.userId),'reject-user':()=>rejectUser(button.dataset.userId)
+    };
+    if(map[action]){event.preventDefault();map[action]();}
+  });
+
+  document.addEventListener('change',async(event)=>{
+    const input=event.target.closest('input[type="file"][data-photo-index]'); if(!input||!input.files?.[0]||!flow)return;
+    try{flow.photos[Number(input.dataset.photoIndex)]=await compressImage(input.files[0]);renderPhotos();}catch{alert('Não foi possível processar a foto.');}
+  });
+
+  window.addEventListener('error',(e)=>{console.error(e.error||e.message);});
+
+  if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(()=>{});
+  if(currentUser()) showScreen('home'); else showScreen('login');
+})();
+
+</script>
+</body>
+</html>
